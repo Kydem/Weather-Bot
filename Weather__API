@@ -1,9 +1,11 @@
 # Imports
 
+import os 
 import python_weather
 import asyncio
 
 # Script
+
 async def getweather():
     client = python_weather.Client(format=python_weather.IMPERIAL)
 
