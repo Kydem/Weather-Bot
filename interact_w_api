@@ -1,17 +1,16 @@
 # .env
-DISCORD_TOKEN={OTQwNDE0NjY3NDgwNzg5MDU0.YgHDaA.L0ASSkoeYvTf1LWccENB6hmZN54}
-DISCORD_GUILD={Programming}
 
-# bot.py
 import os
-
 import discord
 from dotenv import load_dotenv
 
+# bot.py
+
+
 
 load_dotenv()
-TOKEN = os.getenv('OTQwNDE0NjY3NDgwNzg5MDU0.YgHDaA.L0ASSkoeYvTf1LWccENB6hmZN54')
-GUILD = os.getenv('Programming')
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILD')
 
 client = discord.Client()
 
