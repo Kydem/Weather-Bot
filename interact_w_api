@@ -1,28 +1,24 @@
 # .env
 
 import os
+from tokenize import Token
 import discord
 from dotenv import load_dotenv
-
-# bot.py
-
-
+from discord import Client, Intents, Embed
+from discord_slash import SlashCommand
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
+GUILD = int(os.getenv('DISCORD_GUILD'))
 
-client = discord.Client()
+client = discord.Client(intents=discord.Intents.all())
 
-@client.event
-async def on_ready():
-    for guild in client.guilds:
-        if guild.name == GUILD:
-            break
+bot = Client(intents=Intents.default())
+slash = SlashCommand(client, sync_commands=True)
 
+guild_ids = [GUILD]
 
-    print(
-        f'{client.user} is connected to the following guild:\n'
-        f'{guild.name}(id: {guild.id})'        
-    )
-    client.run(TOKEN)
+@slash.slash(name="ping")
+async def _ping(ctx):
+    await ctx.send("Pong!")
+client.run(TOKEN)
