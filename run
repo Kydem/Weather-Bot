@@ -1,0 +1,43 @@
+# bot.py
+
+import os
+from tokenize import Token
+import discord
+from dotenv import load_dotenv
+from discord import Client, Intents, Embed
+from discord_slash import SlashCommand
+
+load_dotenv()
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = int(os.getenv('DISCORD_GUILD'))
+
+client = discord.Client(intents=discord.Intents.all())
+client = discord.Client()
+
+@client.event
+async def on_ready():
+    guild = discord.utils.find(lambda g: g.name == guild.id, client.guilds)
+    print(
+        f'{client.user} is connected to the following guild:\n'
+        f'{guild.name}(id: {guild.id})'
+    )
+
+@client.event
+async def on_ready():
+    print(f'{client.user.name} has connected to Discord!')
+
+@client.event
+async def on_member_join(member):
+    await member.create_dm()
+    await member.dm_channel.send(
+        f'Hi {member.name}, welcome to my Discord server!'
+    )
+bot = Client(intents=Intents.default())
+slash = SlashCommand(client, sync_commands=True)
+
+guild_ids = [GUILD]
+
+@slash.slash(name="ping")
+async def _ping(ctx):
+    await ctx.send("Pong!")
+client.run(TOKEN)
