@@ -1,3 +1,4 @@
+
 # bot.py
 
 import os
@@ -6,6 +7,10 @@ import discord
 from dotenv import load_dotenv
 from discord import Client, Intents, Embed
 from discord_slash import SlashCommand
+
+import python_weather
+import asyncio
+
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -39,5 +44,21 @@ guild_ids = [GUILD]
 
 @slash.slash(name="ping")
 async def _ping(ctx):
-    await ctx.send("Pong!")
+    await ctx.send("Pong!")# Imports
+
+# Script
+@bot.command(name="weather")
+
+async def getweather():
+    client = python_weather.Client(format=python_weather.IMPERIAL)
+
+    weather = await client.find("Moscow, Russia")
+
+    print(weather.current.temperature)
+
+    for forecast in weather.forecasts:
+        print(str(forecast.date), forecast.sky_text, forecast.temperature)
+
+    await client.close()
+
 client.run(TOKEN)
