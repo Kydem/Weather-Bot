@@ -38,6 +38,10 @@ async def getweather(ctx, input=str):
     weather = await client.find(input)
     await ctx.send(f'The temperature is {weather.current.temperature} degrees fahrenheit in {input}')
 
+    for forecast in weather.forecasts:
+        await ctx.send(f'Weather Forecast -  {forecast.date} {forecast.sky_text} {forecast.temperature}')
+
+
 client.run(TOKEN)
 
 
