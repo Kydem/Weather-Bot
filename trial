@@ -2,7 +2,6 @@ import os
 from tokenize import Token
 import discord
 import python_weather
-import asyncio
 from discord import Client, Intents, Embed
 from discord_slash import SlashCommand
 from unicodedata import name
@@ -10,29 +9,18 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from discord_slash.utils.manage_commands import create_option
 
-
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = int(os.getenv('DISCORD_GUILD'))
 client = discord.Client(intents=discord.Intents.all())
 slash = SlashCommand(client, sync_commands=True)
 
+
+
 @client.event
 async def on_ready():
     print(f'Bot connected as {client.user}')
         
-@slash.slash(name="weather", options=[create_option(
-    name='input', description='place', option_type=3, required=True)])
-async def getweather(ctx, input=str):
-    client = python_weather.Client(format=python_weather.IMPERIAL)
-
-    weather = await client.find(input)
-    await ctx.send(f'The temperature is {weather.current.temperature} degrees fahrenheit.')
-    
-
-    for forecast in weather.forecasts:
-        print(str(forecast.date), forecast.sky_text, forecast.temperature)
-
 @slash.slash(name="uwu")
 async def dosomething(ctx):
     await ctx.send("I did something")
@@ -41,5 +29,13 @@ async def dosomething(ctx):
 @slash.slash(name="ping")
 async def _ping(ctx):
     await ctx.send("Pong!")
+
+@slash.slash(name="weather", options=[create_option(
+    name='input', description='place', option_type=3, required=True)])
+async def getweather(ctx, input=str):
+    client = python_weather.Client(format=python_weather.IMPERIAL)
+
+    weather = await client.find(input)
+    await ctx.send(f'The temperature is {weather.current.temperature} degrees fahrenheit.')
 
 client.run(TOKEN)
