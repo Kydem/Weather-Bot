@@ -1,12 +1,8 @@
-
-# bot.py
-
 import os
 from tokenize import Token
 import discord
 import python_weather
 import asyncio
-from dotenv import load_dotenv
 from discord import Client, Intents, Embed
 from discord_slash import SlashCommand
 from unicodedata import name
@@ -15,26 +11,16 @@ from discord.ext import commands
 from discord_slash.utils.manage_commands import create_option
 
 
-
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = int(os.getenv('DISCORD_GUILD'))
 client = discord.Client(intents=discord.Intents.all())
-guild_ids = [GUILD]
+slash = SlashCommand(client, sync_commands=True)
 
 @client.event
 async def on_ready():
-    guild = discord.utils.find(lambda g: g.name == guild.id, client.guilds)
-    print(
-        f'{client.user} is connected to the following guild:\n'
-        f'{guild.name}(id: {guild.id})'
-    )
-bot = Client(intents=Intents.default())
-slash = SlashCommand(client, sync_commands=True)
-
-@slash.slash(name="ping")
-async def _ping(ctx):
-    await ctx.send("Pong!")
+    print(f'Bot connected as {client.user}')
+        
 @slash.slash(name="weather", options=[create_option(
     name='input', description='place', option_type=3, required=True)])
 async def getweather(ctx, input=str):
@@ -47,6 +33,13 @@ async def getweather(ctx, input=str):
     for forecast in weather.forecasts:
         print(str(forecast.date), forecast.sky_text, forecast.temperature)
 
-    await client.close()
+@slash.slash(name="uwu")
+async def dosomething(ctx):
+    await ctx.send("I did something")
+
+
+@slash.slash(name="ping")
+async def _ping(ctx):
+    await ctx.send("Pong!")
 
 client.run(TOKEN)
