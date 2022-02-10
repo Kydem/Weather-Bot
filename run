@@ -4,20 +4,23 @@
 import os
 from tokenize import Token
 import discord
+import python_weather
+import asyncio
 from dotenv import load_dotenv
 from discord import Client, Intents, Embed
 from discord_slash import SlashCommand
+from unicodedata import name
+from dotenv import load_dotenv
+from discord.ext import commands
+from discord_slash.utils.manage_commands import create_option
 
-import python_weather
-import asyncio
 
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = int(os.getenv('DISCORD_GUILD'))
-
 client = discord.Client(intents=discord.Intents.all())
-client = discord.Client()
+guild_ids = [GUILD]
 
 @client.event
 async def on_ready():
@@ -26,35 +29,21 @@ async def on_ready():
         f'{client.user} is connected to the following guild:\n'
         f'{guild.name}(id: {guild.id})'
     )
-
-@client.event
-async def on_ready():
-    print(f'{client.user.name} has connected to Discord!')
-
-@client.event
-async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'Hi {member.name}, welcome to my Discord server!'
-    )
 bot = Client(intents=Intents.default())
 slash = SlashCommand(client, sync_commands=True)
 
-guild_ids = [GUILD]
-
 @slash.slash(name="ping")
 async def _ping(ctx):
-    await ctx.send("Pong!")# Imports
+    await ctx.send("Pong!")
 
-# Script
-@bot.command(name="weather")
-
-async def getweather():
+@slash.slash(name="weather", options=[create_option(
+    name='input', description='place', option_type=3, required=True)])
+async def getweather(ctx, input=str):
     client = python_weather.Client(format=python_weather.IMPERIAL)
 
-    weather = await client.find("Moscow, Russia")
-
-    print(weather.current.temperature)
+    weather = await client.find(input)
+    await ctx.send(f'The temperature is {weather.current.temperature} degrees fahrenheit.')
+    
 
     for forecast in weather.forecasts:
         print(str(forecast.date), forecast.sky_text, forecast.temperature)
