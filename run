@@ -44,7 +44,8 @@ guild_ids = [GUILD]
 
 @slash.slash(name="ping")
 async def _ping(ctx):
-    await ctx.send("Pong!")# Imports
+    await ctx.send("Pong!")
+
 
 # Script
 @bot.command(name="weather")
