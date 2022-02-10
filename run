@@ -35,6 +35,10 @@ slash = SlashCommand(client, sync_commands=True)
 @slash.slash(name="ping")
 async def _ping(ctx):
     await ctx.send("Pong!")
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45541ea0f7c62dedd5b8b8817fe138e10f4b4278
 
 @slash.slash(name="weather", options=[create_option(
     name='input', description='place', option_type=3, required=True)])
