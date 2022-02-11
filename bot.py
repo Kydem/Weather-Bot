@@ -51,7 +51,7 @@ async def getweather(ctx, input=str):
     weather = await get_weather(input)
     temperature_string = f'The temperature is {weather.current.temperature} degrees fahrenheit in {weather.location_name}\n'
     forecast = [f'Date: {forecast.date} Sky: {forecast.sky_text} Temp: {forecast.temperature}' for forecast in weather.forecasts]
-    forecast_string = '```' + '\n'.join(forecast) + '```'
+    forecast_string = '\n'.join(forecast)
     await ctx.send('```WEATHER REPORT:\n' + temperature_string + forecast_string + '```')
 
 
