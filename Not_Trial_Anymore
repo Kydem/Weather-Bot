@@ -18,6 +18,7 @@ slash = SlashCommand(client, sync_commands=True)
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Game('with ur mom'))
+    #await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='your breathing'))
     
     print('Connected to bot: {}'.format(client.user.name))
     print('Bot ID: {}'.format(client.user.id))
@@ -26,9 +27,17 @@ async def on_ready():
 async def dosomething(ctx):
     await ctx.send("I did something")
 
+@slash.slash(name="potato")
+async def dopotato(ctx):
+    await ctx.send("https://po.ta.to")
+
 @slash.slash(name="ping")
 async def _ping(ctx):
     await ctx.send("Pong!")
+    
+@slash.slash(name="hack_time")
+async def dothehack(ctx):
+   await ctx.send("yeet!")
 
 @slash.slash(name="weather", options=[create_option(
    name='input', description='place', option_type=3, required=True)])
@@ -36,26 +45,20 @@ async def getweather(ctx, input=str):
     client = python_weather.Client(format=python_weather.IMPERIAL)
     weather = await client.find(input)
     await ctx.send(f'The temperature is {weather.current.temperature} degrees fahrenheit in {input}')
-
     _forecasts = []
     for forecast in weather.forecasts:
-          _forecasts.append(f'Weather Forecast -  {forecast.date} {forecast.sky_text} {forecast.temperature}')
-    await ctx.send('\n'.join(_forecasts))
-    #for forecast in weather.forecasts:
-    #    await ctx.send(f'Weather Forecast -  {forecast.date} {forecast.sky_text} {forecast.temperature}')
-#client.run(TOKEN)
-
+          _forecasts.append(f'{forecast.date} {forecast.sky_text} {forecast.temperature}')
+    await ctx.send('```' + '\n'.join(_forecasts) + '```')
+client.run(TOKEN)
 #@slash.slash(name="forecast", options=[create_option(
-   #name='input', description='place', option_type=3, required=True)])
+ 
+ #  name='input', description='place', option_type=3, required=True)])
 #async def getweather(ctx, input=str):
  #   client = python_weather.Client(format=python_weather.IMPERIAL)
   #  weather = await client.find(input)
-   # _forecasts = []
-    #for forecast in weather.forecasts:
-     #     _forecasts.append(f'Weather Forecast -  {forecast.date} {forecast.sky_text} {forecast.temperature}')
-    #ctx.send(_forecasts)
 
-client.run(TOKEN)
+
+
 
 
 
