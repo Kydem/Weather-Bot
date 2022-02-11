@@ -1,6 +1,7 @@
 import os
 import discord
 import python_weather
+import random
 from discord_slash import SlashCommand
 from dotenv import load_dotenv
 from discord_slash.utils.manage_commands import create_option
@@ -22,8 +23,8 @@ async def get_weather(place=str):
 # Startup Information
 @client.event
 async def on_ready():
-    await client.change_presence(activity=discord.Game('with ur mom'))
-    #await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='your breathing'))
+    #await client.change_presence(activity=discord.Game('with ur mom'))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name='your breathing'))
     
     print('Connected to bot: {}'.format(client.user.name))
     print('Bot ID: {}'.format(client.user.id))
@@ -31,6 +32,17 @@ async def on_ready():
 @slash.slash(name="uwu")
 async def uwu(ctx):
     await ctx.send("I did something")
+
+@slash.slash(name="ww3")
+async def war(ctx):
+    x =  random.randint(0,10)
+    if x > 5:
+        await ctx.send("```Russia is winning```")
+    elif x == 5:
+        await ctx.send("```Murica and Russia are equal```")
+    else :
+        await ctx.send("```Murica is winning```")
+
 
 @slash.slash(name="potato")
 async def get_potato(ctx):
